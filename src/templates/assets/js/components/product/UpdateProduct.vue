@@ -49,7 +49,7 @@
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                  <label v-if="product_variant.length != 1" @click="product_variant.splice(index,1); checkVariant"
+                  <label v-if="product_variant?.length != 1" @click="product_variant.splice(index,1); checkVariant"
                          class="float-right text-primary"
                          style="cursor: pointer;">Remove</label>
                   <label v-else for="">.</label>
@@ -58,7 +58,7 @@
               </div>
             </div>
           </div>
-          <div class="card-footer" v-if="product_variant.length < variants.length && product_variant.length < 3">
+          <div class="card-footer" v-if="product_variant?.length < variants.length && product_variant?.length < 3">
             <button @click="newVariant" class="btn btn-primary">Add another option</button>
           </div>
 
@@ -110,6 +110,10 @@ export default {
   props: {
     variants: {
       type: Array,
+      required: true
+    },
+      product: {
+      type: String,
       required: true
     }
   },
@@ -191,9 +195,8 @@ export default {
 
        axios.defaults.xsrfCookieName = 'csrftoken';
        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-
-      axios.post('/product/api/create/', product).then(response => {
-        alert(response.data.details);
+      axios.post('/product/api/update/'+ this.product_id + '/', product).then(response => {
+       alert(response.data.details);
       }).catch(error => {
         alert(error.response.data.details);
       })
@@ -204,7 +207,15 @@ export default {
 
   },
   mounted() {
-    console.log('Component mounted.')
+      const product_data = this.product.replace(/'/g, '"')
+      const data = JSON.parse(product_data)
+      this.product_id = data.id
+      this.product_name=data.product_name
+      this.product_sku=data.product_sku
+      this.description=data.description
+      this.images=data.product_image
+      this.product_variant=data.product_variant
+      this.product_variant_prices=data.product_variant_prices
   }
 }
 </script>

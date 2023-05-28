@@ -1,15 +1,15 @@
 {% extends 'backend/base.html' %}
 
-{% block title %} Create Product {% endblock %}
+{% block title %} Update Product {% endblock %}
 
 {% block content %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Create Product</h1>
+    <h1 class="h3 mb-0 text-gray-800">Update Product</h1>
     <a href="{% url 'product:list.product' %}" class="float-right btn btn-primary">All Product</a>
 </div>
 
 <div id="app">
-    <create-product :variants="{{variants|safe}}"></create-product>
+    <update-product :variants="{{variants|safe}}" product="{{product|safe}}"></update-product>
 </div>
 
 {% endblock %}
